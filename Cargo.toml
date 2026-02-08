@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 image = "0.25.9"
 lopdf = "0.39.0"
+rand = "0.10.0"

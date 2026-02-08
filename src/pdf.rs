@@ -1,8 +1,5 @@
 use lopdf::{Document, Object, Stream, dictionary};
 use std::path::Path;
-use std::fs;
-use std::io::Read;
-
 pub fn encode_pdf(data: Vec<u8>, output_path: &Path) -> Result<(), Box<dyn std::error::Error>> {
   let mut doc = Document::with_version("1.7");
   
@@ -77,11 +74,6 @@ pub fn encode_pdf(data: Vec<u8>, output_path: &Path) -> Result<(), Box<dyn std::
 
 pub fn decode_pdf(input_path: &Path) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
   // DEBUG: Print the first 5 bytes
-  let mut f = std::fs::File::open(input_path)?;
-  let mut header = [0u8; 5];
-  f.read_exact(&mut header)?;
-  println!("File Header: {:?}", String::from_utf8_lossy(&header));
-  
   let doc = Document::load(input_path)?;
   
   // Find hidden stream using /Info dict

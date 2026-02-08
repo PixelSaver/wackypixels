@@ -10,7 +10,6 @@
 //! ```
 use image::{GenericImageView, ImageBuffer, ImageReader, Rgba};
 use std::path::Path;
-use std::fs;
 
 /// Returns serialized data from image file
 pub fn encode(path: &Path) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
