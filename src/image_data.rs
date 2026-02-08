@@ -9,10 +9,11 @@
 //! let data = reader.read();
 //! ```
 use image::{GenericImageView, ImageBuffer, ImageReader, Rgba};
+use std::path::Path;
 use std::fs;
 
 /// Returns serialized data from image file
-pub fn encode(path: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
+pub fn encode(path: &Path) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
   let img = ImageReader::open(path)
     .expect("Failed to open image file")
     .decode()
@@ -31,9 +32,7 @@ pub fn encode(path: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
   Ok(out)
 }
 
-pub fn decode(path: &str) -> Result<ImageBuffer<Rgba<u8>, Vec<u8>>, String> {
-  let data = fs::read(path).map_err(|e| e.to_string())?;
-  
+pub fn decode(data: Vec<u8>) -> Result<ImageBuffer<Rgba<u8>, Vec<u8>>, String> {
   if data.len() < 9 {
     return Err("Data too short".to_string())
   }

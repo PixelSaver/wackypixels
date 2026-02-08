@@ -1,9 +1,10 @@
 mod image_data;
 mod encrypt;
 mod decrypt;
-
+mod pdf;
+use std::path::Path;
 
 fn main() {
-  encrypt::encrypt_image("inputs/image.png", "outputs/encrypted.png").unwrap();
-  decrypt::decrypt_image("outputs/encrypted.png", "outputs/decrypted.png").unwrap();
+  encrypt::encrypt_image(Path::new("inputs/image.png"), Path::new("outputs/encrypted.png")).unwrap();
+  decrypt::decrypt_image(Path::new("outputs/001.pdf"), Path::new("outputs/decrypted.png")).unwrap();
 }
