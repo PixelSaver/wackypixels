@@ -1,5 +1,3 @@
-use rand::prelude::IndexedRandom;
-
 #[derive(Clone, Copy)]
 enum EncodeMode {
   /// Encodes two bits of information: 00
@@ -29,16 +27,6 @@ impl EncodeMode {
           0b10 => EncodeMode::Emoji,
           0b11 => EncodeMode::Alphanum,
           _ => unreachable!(),
-      }
-  }
-
-  /// Convert mode to 2-bit representation
-  fn to_bits(&self) -> u8 {
-      match self {
-          EncodeMode::Invisible => 0b00,
-          EncodeMode::Cjk => 0b01,
-          EncodeMode::Emoji => 0b10,
-          EncodeMode::Alphanum => 0b11,
       }
   }
 }
