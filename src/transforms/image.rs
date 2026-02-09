@@ -1,13 +1,14 @@
 //! ImageTransform serializes/deserializes png data
+use crate::error::{PipelineError, Result};
 use crate::transform::Transform;
-use image::{GenericImageView, ImageBuffer, ImageError, ImageFormat, ImageReader, Rgba};
+use image::{GenericImageView, ImageBuffer, ImageFormat, ImageReader, Rgba};
 use std::io::Cursor;
 
 #[derive(Debug)]
 pub struct ImageTransform;
 
 impl Transform for ImageTransform {
-  fn encode(&self, data: Vec<u8>) -> Result<Vec<u8>, String> {
+  fn encode(&self, data: Vec<u8>) -> Result<Vec<u8>> {
     let img = ImageReader::new(Cursor::new(&data))
       .decode()
       .expect("Failed to decode image");
@@ -21,9 +22,9 @@ impl Transform for ImageTransform {
     Ok(out)
   }
 
-  fn decode(&self, data: Vec<u8>) -> Result<Vec<u8>, String> {
+  fn decode(&self, data: Vec<u8>) -> Result<Vec<u8>> {
     if data.len() < 9 {
-      return Err("Data too short".to_string());
+      return Err(PipelineError::Image("Data too short".to_string()));
     }
 
     let width = u32::from_le_bytes(data[0..4].try_into().unwrap());
@@ -31,18 +32,27 @@ impl Transform for ImageTransform {
     let format = data[8];
 
     if format != 4 {
-      return Err("Unsupported format, only RGBA supported".to_string());
+      return Err(PipelineError::Image(
+        "Unsupported format, only RGBA supported".to_string(),
+      ));
     }
 
     let expected_len = 9 + (width * height * 4) as usize;
     if data.len() != expected_len {
-      return Err("Pixel data length mismatch".to_string());
+      return Err(PipelineError::Image(
+        "Pixel data length mismatch".to_string(),
+      ));
     }
 
     let pixels = data[9..].to_vec();
 
     let img: ImageBuffer<Rgba<u8>, Vec<u8>> = ImageBuffer::from_raw(width, height, pixels)
-      .ok_or_else(|| "Failed to construct image buffer".to_string())?;
+      .ok_or_else(|| {
+        PipelineError::Image(format!(
+          "Failed to construct {}x{} image buffer",
+          width, height
+        ))
+      })?;
 
     let mut png_bytes: Vec<u8> = Vec::new();
 

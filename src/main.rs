@@ -6,6 +6,7 @@ mod unicode;
 mod lzma;
 mod transforms;
 mod transform;
+mod error;
 // mod lorem_ipsum;
 mod wav;
 use std::path::Path;
