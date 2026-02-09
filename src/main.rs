@@ -4,12 +4,22 @@ mod decrypt;
 mod pdf;
 mod unicode;
 mod lzma;
-mod transforms;
+mod transforms {
+  pub mod image;
+  pub mod pdf;
+  pub mod lzma;
+  pub mod unicode;
+  pub mod wav;
+}
+mod pipeline;
 mod transform;
 mod error;
-// mod lorem_ipsum;
 mod wav;
+
+// use pipeline::Pipeline;
 use std::path::Path;
+use transforms::*;
+use error::Result;
 
 fn main() {
   encrypt::encrypt_image(Path::new("inputs/image.png"), Path::new("outputs/")).unwrap();
