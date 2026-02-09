@@ -4,6 +4,8 @@ mod decrypt;
 mod pdf;
 mod unicode;
 mod lzma;
+mod transforms;
+mod transform;
 // mod lorem_ipsum;
 mod wav;
 use std::path::Path;
