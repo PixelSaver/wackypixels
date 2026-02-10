@@ -124,10 +124,10 @@ wackypixels encode --pipeline image,lzma,wav
 ### Example 1: Quick Encode/Decode
 ```bash
 # Encode
-wackypixels encode -i cat.png -o output/
+wackypixels encode -i cat.png -o outputs/
 
 # Decode
-wackypixels decode -i output/encrypted.wav
+wackypixels decode -i outputs/encrypted.wav
 ```
 
 ### Example 2: Custom Lightweight Pipeline

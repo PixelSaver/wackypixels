@@ -86,6 +86,7 @@ pub enum TransformType {
   Lzma,
   Unicode,
   Wav,
+  Gzip
 }
 
 impl TransformType {
@@ -96,6 +97,7 @@ impl TransformType {
       TransformType::Lzma => "LZMA/XZ compression",
       TransformType::Unicode => "Unicode, multimode encoding (CJK, Emojis, Hidden characters, etc)",
       TransformType::Wav => "WAV audio encoding (amplitude modulation)",
+      TransformType::Gzip => "Gzip compression",
     }
   }
 }

@@ -21,6 +21,7 @@ pub fn build_custom_pipeline(types: &[TransformType]) -> Pipeline {
       TransformType::Lzma => pipeline = pipeline.add(lzma::LzmaTransform),
       TransformType::Unicode => pipeline = pipeline.add(unicode::UnicodeTransform),
       TransformType::Wav => pipeline = pipeline.add(wav::WavTransform),
+      TransformType::Gzip => pipeline = pipeline.add(flate::GzipTransform),
     }
   }
   

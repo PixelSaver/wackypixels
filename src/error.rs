@@ -10,6 +10,7 @@ pub enum PipelineError {
   Unicode(String),
   Wav(String),
   Utf8(std::string::FromUtf8Error),
+  Flate(String),
   InvalidData(String),
 }
 
@@ -23,6 +24,7 @@ impl fmt::Display for PipelineError {
             PipelineError::Unicode(e) => write!(f, "Unicode encoding error: {}", e),
             PipelineError::Wav(e) => write!(f, "WAV audio error: {}", e),
             PipelineError::Utf8(e) => write!(f, "UTF-8 conversion error: {}", e),
+            PipelineError::Flate(e) => write!(f, "Flate compression error: {}", e),
             PipelineError::InvalidData(msg) => write!(f, "Invalid data: {}", msg),
         }
     }

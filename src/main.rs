@@ -4,6 +4,7 @@ mod transforms {
   pub mod lzma;
   pub mod unicode;
   pub mod wav;
+  pub mod flate;
 }
 mod pipeline;
 mod transform;
@@ -102,6 +103,7 @@ fn run() -> Result<()> {
           TransformType::Lzma,
           TransformType::Unicode,
           TransformType::Wav,
+          TransformType::Gzip,
       ];
       
       for t in all_types {
