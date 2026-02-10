@@ -1,9 +1,3 @@
-mod image_data;
-mod encrypt;
-mod decrypt;
-mod pdf;
-mod unicode;
-mod lzma;
 mod transforms {
   pub mod image;
   pub mod pdf;
@@ -14,14 +8,44 @@ mod transforms {
 mod pipeline;
 mod transform;
 mod error;
-mod wav;
 
-// use pipeline::Pipeline;
+use pipeline::Pipeline;
 use std::path::Path;
 use transforms::*;
 use error::Result;
 
 fn main() {
-  encrypt::encrypt_image(Path::new("inputs/image.png"), Path::new("outputs/")).unwrap();
-  decrypt::decrypt_image(Path::new("outputs/005.wav"), Path::new("outputs/")).unwrap();
+  if let Err(e) = run() {
+    eprintln!("\nX Pipeline failed!");
+    eprintln!("  Error: {}", e);
+    std::process::exit(1);
+  }
+}
+fn run() -> Result<()> {
+  let pipeline = Pipeline::new()
+    .add(image::ImageTransform)
+    .add(pdf::PdfTransform)
+    .add(lzma::LzmaTransform)
+    .add(unicode::UnicodeTransform)
+    .add(wav::WavTransform)
+    .save_intermediates(true);
+  
+  println!("--- ENCODING ---");
+  let output = pipeline.encode(
+    Path::new("inputs/image.png"),
+    Path::new("outputs")
+  )?;
+  
+  println!("--- DECODING ---");
+  let decrypted = pipeline.decode(
+    &output,
+    Path::new("decrypted")
+  )?;
+  
+  println!("--- SUCCESS ---");
+  println!("Original: inputs/image.png");
+  println!("Encrypted: {}", output.display());
+  println!("decrypted: {}", decrypted.display());
+  
+  Ok(())
 }

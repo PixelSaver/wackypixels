@@ -6,9 +6,9 @@ use std::path::Path;
 use std::io::Cursor;
 
 #[derive(Debug)]
-pub struct PDFTransform;
+pub struct PdfTransform;
 
-impl Transform for PDFTransform {
+impl Transform for PdfTransform {
   fn encode(&self, data: Vec<u8>) -> Result<Vec<u8>> {
     let mut doc = Document::with_version("1.7");
 
