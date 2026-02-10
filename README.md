@@ -1,8 +1,7 @@
-# PixelVault
+# wackypixels
 
 
 <a id="readme-top"></a>
-<!-- TABLE OF CONTENTS -->
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -41,7 +40,7 @@ Have fun with it! Coding doesn't have to be all corporate all the time!!
 
 ### Prerequisites
 - Rust 1.70+ ([install Rust](https://rustup.rs/))
-- 
+
 ### Build from Source
 ```bash
 # Clone the repository
@@ -53,8 +52,9 @@ cargo build --release
 
 # Binary will be at ./target/release/wackypixels
 ```
+
 ### Install Globally 
-^I don't recommend this. This is an experimental fun, chaotic program, not something you should use on your filesystem. If you really want to, just know I warned you.
+> [!Warning] I don't recommend this. This is an experimental fun, chaotic program, not something you should use on your filesystem. If you really want to, just know I warned you.
 ```bash
 cargo install --path .
 
@@ -72,38 +72,38 @@ This will:
 4. Save all intermediate files
 ```bash
 # Run the full default pipeline (encode + decode)
-pixelvault run -i input.png
+wackypixels run -i input.png
 ```
 
 ### Basic Commands
 ```bash
 # Encode an image
-pixelvault encode -i image.png -o output/
+wackypixels encode -i image.png -o output/
 
 # Decode back to original
-pixelvault decode -i output/encrypted.wav -o decrypted/
+wackypixels decode -i output/encrypted.wav -o decrypted/
 
 # Clean output directories
-pixelvault clean
+wackypixels clean
 
 # List available transformations
-pixelvault list
+wackypixels list
 ```
 
 ### Creating Custom Pipelines
 You can specify your own transformation pipeline:
 ```bash
 # Lightweight: Just compression + unicode
-pixelvault encode --pipeline image,lzma,unicode
+wackypixels encode --pipeline image,lzma,unicode
 
 # Maximum compression: Double compress!
-pixelvault encode --pipeline image,lzma,unicodelzma
+wackypixels encode --pipeline image,lzma,unicodelzma
 
 # Audio without unicode
-pixelvault encode --pipeline image,pdf,lzma,wav
+wackypixels encode --pipeline image,pdf,lzma,wav
 
 # High-density WAV 
-pixelvault encode --pipeline image,lzma,wav
+wackypixels encode --pipeline image,lzma,wav
 ```
 
 ### Pipeline Design Tips
@@ -133,7 +133,7 @@ wackypixels decode -i output/encrypted.wav
 ### Example 2: Custom Lightweight Pipeline
 ```bash
 # Just compression and unicode (no audio bloat)
-pixelvault encode --pipeline image,lzma,unicode -i photo.jpg
+wackypixels encode --pipeline image,lzma,unicode -i photo.jpg
 
 # Result: ~120% of original size instead of 650%
 ```
@@ -146,14 +146,14 @@ Why are you doing this???
 
 for file in images/*.png; do
     filename=$(basename "$file" .png)
-    pixelvault encode -i "$file" -o "output/$filename/" -s false
+    wackypixels encode -i "$file" -o "output/$filename/" -s false
 done
 ```
 
 ### Example 5: Inspect Intermediate Stages
 ```bash
 # Encode with intermediates saved
-pixelvault encode -i secret.png -o debug/
+wackypixels encode -i secret.png -o debug/
 
 # Check what each stage produces
 ls -lh debug/
@@ -165,7 +165,7 @@ ls -lh debug/
 # encrypted.wav                 2.0 MB
 
 # Can decode from any intermediate stage!
-pixelvault decode -i debug/003_lzma_compression.xz \
+wackypixels decode -i debug/003_lzma_compression.xz \
     --pipeline lzma,unicode,wav
 ```
 
@@ -177,7 +177,7 @@ pixelvault decode -i debug/003_lzma_compression.xz \
 ### Terminal Output
 ```bash
 # Encode with intermediates saved
-pixelvault encode -i secret.png -o debug/
+wackypixels encode -i secret.png -o debug/
 
 # Check what each stage produces
 ls -lh debug/
@@ -189,7 +189,7 @@ ls -lh debug/
 # encrypted.wav                 2.0 MB
 
 # Can decode from any intermediate stage!
-pixelvault decode -i debug/003_lzma_compression.xz \
+wackypixels decode -i debug/003_lzma_compression.xz \
     --pipeline lzma,unicode,wav
 ```
 
@@ -248,7 +248,7 @@ Not yet
 - [ ] Parallel pipeline processing
 
 ### Notes
-WHy is this useful? It's not. Thanks for checking this out!
+Why is this useful? It's not. Thanks for checking this out!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
