@@ -35,19 +35,26 @@ impl Pipeline {
         e
       })?;
     
+    println!("  Input: {} ({} bytes)\n", input.display(), data.len());
+    
     let total = self.transforms.len();
     
     for (i, transform) in self.transforms.iter().enumerate() {
       let step = i + 1;
       
-      println!("[{}/{}] Applying: {}", step, total, transform.name());
+      println!("[{}/{}] Applying: {} ...", step, total, transform.name());
+      std::io::Write::flush(&mut std::io::stdout()).unwrap();
       
+      let size_before = data.len();
       // Give errors context
       data = transform.encode(data).map_err(|e| {
         eprintln!("X Failed at step {}/{}: {}", step, total, transform.name());
         eprintln!("  Error: {}", e);
         e
       })?;
+      
+      let ratio = (data.len() as f64 / size_before as f64) * 100.0;
+      println!("  ({} bytes, {:.1}%", data.len(), ratio);
       
       if self.save_intermediates {
         let filename = format!("{:03}_{}.{}", 
@@ -61,23 +68,23 @@ impl Pipeline {
             eprintln!("Failed to save intermediate file: {}", path.display());
             e
           })?;
-        println!("Saved: {}", path.display());
+        println!("  Saved: {}", path.display());
       }
       
-      println!(" Output size: {} bytes", data.len());
+      println!("  Output size: {} bytes", data.len());
     }
     
     let final_ext = self.transforms.last()
       .map(|t| t.extension())
       .unwrap_or("bin");
     let output_path = output_dir.join(format!("encrypted.{}", final_ext));
-    fs::write(&output_path, data)?;
+    fs::write(&output_path, &data)?;
     
     println!("\n Encryption complete: {}", output_path.display());
     Ok(output_path)
   }
   
-  pub fn decode(&self, input: &Path, output_dir: &Path) -> Result<PathBuf> {
+  pub fn decode(&self, input: &Path, output_dir: &Path, output_file: Option<&Path>) -> Result<PathBuf> {
     fs::create_dir_all(output_dir)?;
     
     let mut data = fs::read(input)
@@ -85,13 +92,18 @@ impl Pipeline {
         eprintln!("Failed to read encrypted file: {}", input.display());
         e
       })?;
+    
+    println!("  Input: {} ({} bytes)\n", input.display(), data.len());
+    
     let total = self.transforms.len();
     
     for (i, transform) in self.transforms.iter().rev().enumerate() {
       let step = i + 1;
       
-      println!("[{}/{}] Reversing: {}", step, total, transform.name());
+      println!("[{}/{}] Reversing: {} ...", step, total, transform.name());
+      std::io::Write::flush(&mut std::io::stdout()).unwrap();
       
+      let size_before = data.len();
       data = transform.decode(data).map_err(|e| {
         eprintln!("X Failed at decode step {}/{}: {}", step, total, transform.name());
         eprintln!("  Error: {}", e);
@@ -101,6 +113,9 @@ impl Pipeline {
         eprintln!("    - Missing transformation step");
         e
       })?;
+      
+      let ratio = (data.len() as f64 / size_before as f64) * 100.0;
+      println!("  ({} bytes, {:.1}%", data.len(), ratio);
       
       if self.save_intermediates {
         let extension = if i + 1 < total {
@@ -125,11 +140,20 @@ impl Pipeline {
       println!("  Output size: {} bytes", data.len());
     }
     
-    let output_path = output_dir.join("decrypted.png");
+    let output_path = output_file
+      .map(|p| output_dir.join(p))
+      .unwrap_or_else(|| output_dir.join("decrypted.png"));
+    
     fs::write(&output_path, data)?;
     
     println!("\n Decryption complete: {}", output_path.display());
     Ok(output_path)
-    
+  }
+  
+  pub fn print_summary(&self) {
+    println!("Pipeline ({} steps):", self.transforms.len());
+    for (i, transform) in self.transforms.iter().enumerate() {
+      println!("  {}. {} -> .{}\n", i + 1, transform.name(), transform.extension());
+    }
   }
 }

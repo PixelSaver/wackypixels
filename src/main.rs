@@ -8,6 +8,7 @@ mod transforms {
 mod pipeline;
 mod transform;
 mod error;
+mod cli;
 
 use pipeline::Pipeline;
 use std::path::Path;
@@ -39,7 +40,8 @@ fn run() -> Result<()> {
   println!("--- DECODING ---");
   let decrypted = pipeline.decode(
     &output,
-    Path::new("decrypted")
+    Path::new("decrypted"),
+    None
   )?;
   
   println!("--- SUCCESS ---");
