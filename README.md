@@ -54,7 +54,7 @@ cargo build --release
 ```
 
 ### Install Globally 
-> [!Warning] I don't recommend this. This is an experimental fun, chaotic program, not something you should use on your filesystem. If you really want to, just know I warned you.
+> [!IMPORTANT] I don't recommend this. This is an experimental fun, chaotic program, not something you should use on your filesystem. If you really want to, just know I warned you.
 ```bash
 cargo install --path .
 
