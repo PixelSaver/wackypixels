@@ -70,7 +70,7 @@ pub enum Commands {
   /// Run the default full pipeline (encode + decode)
   Run {
     /// Input file
-    #[arg(short, long, default_value = "input.png")]
+    #[arg(short, long, default_value = "inputs/image.png")]
     input: PathBuf,
     
     /// Skip confirmation before cleaning
