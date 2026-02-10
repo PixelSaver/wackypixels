@@ -10,8 +10,10 @@ pub struct ImageTransform;
 impl Transform for ImageTransform {
   fn encode(&self, data: Vec<u8>) -> Result<Vec<u8>> {
     let img = ImageReader::new(Cursor::new(&data))
-      .decode()
-      .expect("Failed to decode image");
+        .with_guessed_format()
+        .map_err(|e| PipelineError::Image(e.to_string()))?
+        .decode()
+        .map_err(|e| PipelineError::Image(e.to_string()))?;
     let (width, height) = img.dimensions();
     let pixels = img.to_rgba8().into_raw();
     let mut out = Vec::new();
@@ -68,6 +70,6 @@ impl Transform for ImageTransform {
   }
 
   fn extension(&self) -> &str {
-    "png"
+    "bin"
   }
 }

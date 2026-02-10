@@ -87,7 +87,7 @@ impl Pipeline {
       })?;
     let total = self.transforms.len();
     
-    for (i, transform) in self.transforms.iter().enumerate() {
+    for (i, transform) in self.transforms.iter().rev().enumerate() {
       let step = i + 1;
       
       println!("[{}/{}] Reversing: {}", step, total, transform.name());
@@ -103,10 +103,15 @@ impl Pipeline {
       })?;
       
       if self.save_intermediates {
+        let extension = if i + 1 < total {
+          self.transforms[total - i - 2].extension() 
+        } else {
+          "png"
+        };
         let filename = format!("{:03}_{}_decoded.{}",
           total-i,
           transform.name().replace(" ", "_").to_lowercase(),
-          transform.extension()
+          extension
         );
         let path = output_dir.join(filename);
         fs::write(&path, &data)

@@ -45,7 +45,7 @@ fn run() -> Result<()> {
   println!("--- SUCCESS ---");
   println!("Original: inputs/image.png");
   println!("Encrypted: {}", output.display());
-  println!("decrypted: {}", decrypted.display());
+  println!("Decrypted: {}", decrypted.display());
   
   Ok(())
 }

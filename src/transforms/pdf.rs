@@ -79,7 +79,7 @@ impl Transform for PdfTransform {
     
     doc.save_to(&mut Cursor::new(&mut pdf_bytes))
       .map_err(|e| e.to_string())?;
-    Ok(Vec::new())
+    Ok(pdf_bytes)
   }
 
   fn decode(&self, data: Vec<u8>) -> Result<Vec<u8>> {
@@ -115,7 +115,7 @@ impl Transform for PdfTransform {
 
 
   fn name(&self) -> &str {
-    "PDF /Info"
+    "PDF"
   }
 
   fn extension(&self) -> &str {

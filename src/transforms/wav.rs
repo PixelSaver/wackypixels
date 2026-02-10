@@ -124,17 +124,11 @@ impl Transform for WavTransform {
       len |= bit << i;
     }
 
-    println!("Decoded length: {}", len);
-
     // Calculate expected samples needed
     let header_samples = 32 * samples_per_symbol * 2;
     let data_samples = len as usize * 2 * samples_per_symbol * 2; // 2 symbols per byte
     let expected_total = header_samples + data_samples;
-
-    println!("Header samples: {}", header_samples);
-    println!("Expected data samples: {}", data_samples);
-    println!("Expected total: {}", expected_total);
-
+    
     if samples.len() < expected_total {
       return Err(PipelineError::Wav(format!(
         "Not enough samples: have {}, need {}",
@@ -196,7 +190,6 @@ impl Transform for WavTransform {
       output.push(byte);
     }
 
-    println!("Successfully decoded {} bytes", output.len());
     Ok(output)
   }
 
