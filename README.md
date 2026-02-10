@@ -1,4 +1,4 @@
-# wackypixels
+# Wacky Pixels
 
 
 <a id="readme-top"></a>
@@ -97,7 +97,7 @@ You can specify your own transformation pipeline:
 wackypixels encode --pipeline image,lzma,unicode
 
 # Maximum compression: Double compress!
-wackypixels encode --pipeline image,lzma,unicodelzma
+wackypixels encode --pipeline image,lzma,unicode,lzma
 
 # Audio without unicode
 wackypixels encode --pipeline image,pdf,lzma,wav
