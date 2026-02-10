@@ -1,9 +1,7 @@
 //! PDFTransform serializes/deserializes png data
 use crate::transform::Transform;
 use crate::error::{PipelineError, Result};
-use lopdf::{Document, Object, Stream, dictionary};
-use std::path::Path;
-use std::io::Cursor;
+use lopdf::{Document, Object, Stream, dictionary};use std::io::Cursor;
 
 #[derive(Debug)]
 pub struct PdfTransform;
