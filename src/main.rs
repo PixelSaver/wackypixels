@@ -114,7 +114,7 @@ fn run() -> Result<()> {
       println!("  wackypixels encode --pipeline image,lzma,unicode")
     }
     
-    Commands::Run { input, yes } => {
+    Commands::Run { input, encode_output, decode_output, output_file, pipeline, save_intermediates, yes } => {
       println!("!! Running Full Pipeline\n");
       
       // Clean first
@@ -147,12 +147,17 @@ fn run() -> Result<()> {
       }
       
       // Encode
-      let pipeline = pipeline_builder::build_default_pipeline()
-        .save_intermediates(true);
+      let mut pipeline = if let Some(types) = pipeline {
+        pipeline_builder::build_custom_pipeline(&types)
+      } else {
+        pipeline_builder::build_default_pipeline()
+      };
+      pipeline = pipeline.save_intermediates(save_intermediates);
+      
       println!("--- ENCODING ---");
       pipeline.print_summary();
       
-      let encrypted = pipeline.encode(&input, &PathBuf::from("outputs/"))?;
+      let encrypted = pipeline.encode(&input, &encode_output)?;
       
       println!("\n{}\n", "-".repeat(60));
       
@@ -160,7 +165,7 @@ fn run() -> Result<()> {
       println!("--- DECODING ---");
       pipeline.print_summary();
       
-      let decrypted = pipeline.decode(&encrypted, &PathBuf::from("decrypted/"), Some(&PathBuf::from("decrypted/decrypted.png")))?;
+      let decrypted = pipeline.decode(&encrypted, &decode_output, Some(&output_file))?;
       
       println!("--- SUCCESS ---");
       println!("Original:  {}", input.display());

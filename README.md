@@ -64,6 +64,15 @@ wackypixels --help
 
 ## Usage
 
+For all of the below prompts, if you did not install and are running the development environment, replace all instances of `wackypixels` with `cargo run --`
+For example,
+```bash
+wackypixels run 
+# Should become
+cargo run -- run
+```
+
+
 ### Quick Start
 This will:
 1. Clean output/ and decrypted/ directories
@@ -91,13 +100,14 @@ wackypixels list
 ```
 
 ### Creating Custom Pipelines
+The `--pipeline` flag or the `-p` flag works on `encode`, `decode`, and `run`.
 You can specify your own transformation pipeline:
 ```bash
 # Lightweight: Just compression + unicode
 wackypixels encode --pipeline image,lzma,unicode
 
 # Maximum compression: Double compress!
-wackypixels encode --pipeline image,lzma,unicode,lzma
+wackypixels encode --pipeline image,lzma,unicode,gzip
 
 # Audio without unicode
 wackypixels encode --pipeline image,pdf,lzma,wav
@@ -113,7 +123,7 @@ wackypixels encode --pipeline image,lzma,wav
 - Compress!
 
 #### For maximum cursedness:
-- Everything: `image,pdf,lzma,unicode,wav`
+- Everything: `image,pdf,lzma,unicode,wav,gzip`
 - Image is now 6.5x
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

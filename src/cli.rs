@@ -15,10 +15,10 @@ pub enum Commands {
   /// Encode an image through the pipeline
   Encode {
     /// Input file to encode
-    #[arg(short, long, default_value = "inputs/image.png")]
+    #[arg(short = 'i', long, default_value = "inputs/image.png")]
     input: PathBuf,
     /// Output directory for encoding
-    #[arg(short, long, default_value = "outputs")]
+    #[arg(short = 'o', long, default_value = "outputs")]
     output: PathBuf,
     /// Whether or not to seave intermediate files
     #[arg(short, long, default_value_t = true)]
@@ -26,25 +26,25 @@ pub enum Commands {
     
     /// Custom pipeline (comma-separated)
     /// Example: image,pdf,lzma,unicode,wav
-    #[arg(short, long, value_delimiter = ',')]
+    #[arg(short = 'p', long, value_delimiter = ',')]
     pipeline: Option<Vec<TransformType>>,
   },
   /// Decode an image through the pipeline
   Decode {
     /// Path to encrypted file to decode
-    #[arg(short, long, default_value = "inputs/image.png")]
+    #[arg(short = 'i', long, default_value = "inputs/image.png")]
     input: PathBuf,
     /// Output directory for decoding
-    #[arg(short, long, default_value = "decrypted")]
+    #[arg(short = 'o', long, default_value = "decrypted")]
     output: PathBuf,
-    /// Whether or not to seave intermediate files
+    /// Whether or not to save intermediate files
     #[arg(short, long, default_value_t = true)]
     save_intermediates: bool,
     
     /// Custom pipeline (comma-separated) in the forward direction
     /// Decoding happens in the reverse of whatever pipeline is given
     /// Example: image,pdf,lzma,unicode,wav
-    #[arg(short, long, value_delimiter = ',')]
+    #[arg(short = 'p', long, value_delimiter = ',')]
     pipeline: Option<Vec<TransformType>>,
     
     #[arg(short = 'f', long, default_value = "decrypted.png")]
@@ -69,9 +69,30 @@ pub enum Commands {
   
   /// Run the default full pipeline (encode + decode)
   Run {
-    /// Input file
-    #[arg(short, long, default_value = "inputs/image.png")]
+    /// Input file for everything
+    #[arg(short = 'i', long, default_value = "inputs/image.png")]
     input: PathBuf,
+    
+    /// Encoding file directories
+    #[arg(short = 'e', long, default_value = "outputs/")]
+    encode_output: PathBuf,
+    
+    /// Output directory after decoding
+    #[arg(short = 'd', long, default_value = "decrypted/")]
+    decode_output: PathBuf,
+    
+    #[arg(short = 'f', long, default_value = "decrypted.png")]
+    output_file: PathBuf,
+    
+    /// Custom pipeline (comma-separated) in the forward direction
+    /// Decoding happens in the reverse of whatever pipeline is given
+    /// Example: image,pdf,lzma,unicode,wav
+    #[arg(short = 'p', long, value_delimiter = ',')]
+    pipeline: Option<Vec<TransformType>>,
+    
+    /// Whether or not to save intermediate files
+    #[arg(short, long, default_value_t = true)]
+    save_intermediates: bool,
     
     /// Skip confirmation before cleaning
     #[arg(short = 'y', long)]
@@ -86,7 +107,7 @@ pub enum TransformType {
   Lzma,
   Unicode,
   Wav,
-  Gzip
+  Gzip,
 }
 
 impl TransformType {
