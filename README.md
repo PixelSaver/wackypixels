@@ -183,7 +183,7 @@ wackypixels decode -i debug/003_lzma_compression.xz \
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- SCREENSHOTS -->
-## Screenshots
+## Outputs
 
 ### Terminal Output
 ```bash
@@ -208,12 +208,15 @@ wackypixels decode -i debug/003_lzma_compression.xz \
 
 <!-- SCREENSHOTS -->
 ## Screenshots
-Not yet
 
-<details>
+
+https://github.com/user-attachments/assets/1b41ac12-800d-4ad2-8f50-6afa62d27225
+
+
+<!-- <details>
   <summary><strong>Not yet</strong></summary>
   <img src="media/img2.png" alt="Screenshot of the added simulation controls">
-</details>
+</details> -->
 
 > [!TIP]
 > Use `--save-intermediates false` to skip saving intermediate files if you only care about the final output.
